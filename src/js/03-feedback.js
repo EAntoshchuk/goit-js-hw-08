@@ -10,16 +10,15 @@ const ref = {
   input: document.querySelector('input'),
 };
 
-const formData = {};
+let formData = {};
 
-ref.form.addEventListener(
-  'input',
-  throttle(event => {
-    formData[event.target.name] = event.target.value;
-    console.log(formData);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(formData));
-  }, 500)
-);
+ref.form.addEventListener('input', throttle(onTextareaInput, 500));
+
+function onTextareaInput(event) {
+  formData[event.target.name] = event.target.value;
+  console.log(formData);
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(formData));
+}
 
 // console.log(ref.form);
 // console.log(ref.textarea);
@@ -31,14 +30,14 @@ ref.form.addEventListener('submit', onFormSubmit);
 
 // feedbackMessage();
 // writtenEmail();
-fillform();
+populateTextarea();
 
 function onFormSubmit(event) {
   event.preventDefault();
   if (ref.input.value !== '' && ref.textarea.value !== '') {
     console.log(formData);
     localStorage.removeItem(STORAGE_KEY);
-    event.currentTarget.reset();
+    event.target.reset();
   }
 
   // localStorage.removeItem(STORAGE_EMAIL);
